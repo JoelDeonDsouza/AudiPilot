@@ -2,7 +2,7 @@
 //  ContentView.swift
 //  AudiPilot
 //
-//  Created by Dambi on 04.04.25.
+//  Created by Dambi on 04.04.25
 //
 
 import SwiftUI
