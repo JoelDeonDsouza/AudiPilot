@@ -9,29 +9,32 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        ZStack {
-            ScrollView {
-                VStack(spacing: 15) {
-                    HomeHeaderCap()
-                    CustomDivider()
-                    CarBlock()
-                    CustomDivider()
-                    CustomWrapper(title: "Quick Controls", showEdit: true, actionItems: quickControls)
-                    CustomDivider()
-                    CustomWrapper(title: "Climate Controls", showEdit: true, actionItems: climateControls)
-                    CustomDivider()
-                    CustomWrapper(title: "Pilot Controls", actionItems: pilotControls)
-                    CustomDivider()
-                    AllSettings()
-                    CustomizeButtom()
+        NavigationView {
+            ZStack {
+                ScrollView {
+                    VStack(spacing: 15) {
+                        HomeHeaderCap()
+                        CustomDivider()
+                        CarBlock()
+                        CustomDivider()
+                        CustomWrapper(title: "Quick Controls", showEdit: true, actionItems: quickControls)
+                        CustomDivider()
+                        CustomWrapper(title: "Climate Controls", showEdit: true, actionItems: climateControls)
+                        CustomDivider()
+                        CustomWrapper(title: "Pilot Controls", actionItems: pilotControls)
+                        CustomDivider()
+                        AllSettings()
+                        CustomizeButtom()
+                    }
+                    .padding()
                 }
-                .padding()
+                VoiceActivationButton()
             }
-            VoiceActivationButton()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color("DarkBg"))
+            .foregroundColor(Color.white)
+            .navigationBarHidden(true)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color("DarkBg"))
-        .foregroundColor(Color.white)
     }
 }
 
@@ -228,7 +231,9 @@ struct AllSettings: View {
         VStack {
             CustomBlocks(title: "All Settings")
             LazyVGrid(columns: [GridItem(.fixed(170)), GridItem(.fixed(170))]) {
-                SettingGrid(icon: "gauge.open.with.lines.needle.33percent.and.arrowtriangle", title: "Controls", subtitle: "Media and more", hasSubtitle: true, backgroundColor: Color("Blue"))
+                NavigationLink(destination: AutoControlView()){
+                    SettingGrid(icon: "gauge.open.with.lines.needle.33percent.and.arrowtriangle", title: "Controls", subtitle: "Media and more", hasSubtitle: true, backgroundColor: Color("Blue"))
+                }
                 SettingGrid(icon: "cloud.sun.fill", title: "Climate", subtitle: "Weather and more", hasSubtitle: true)
                 SettingGrid(icon: "car.rear.road.lane.distance.5", title: "Pilot", subtitle: "Auto mode", hasSubtitle: true)
                 SettingGrid(icon: "gearshape.2.fill", title: "Advance", subtitle: "Advanced settings", hasSubtitle: true)
