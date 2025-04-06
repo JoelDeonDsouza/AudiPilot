@@ -8,14 +8,22 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var openPilotAssistant: Bool = false
+    @State private var openMediaControl: Bool = false
+    @State private var openCharging: Bool = false
+    
+    @State private var actionText = ""
+    @State private var actionIcon = ""
+    @State private var openAction = false
+    
     var body: some View {
         NavigationView {
             ZStack {
                 ScrollView {
                     VStack(spacing: 15) {
-                        HomeHeaderCap()
+                        HomeHeaderCap(openMediaControl: $openMediaControl)
                         CustomDivider()
-                        CarBlock()
+                        CarBlock(openCharging: $openCharging)
                         CustomDivider()
                         CustomWrapper(title: "Quick Controls", showEdit: true, actionItems: quickControls)
                         CustomDivider()
@@ -28,7 +36,31 @@ struct ContentView: View {
                     }
                     .padding()
                 }
-                VoiceActivationButton()
+                VoiceActivationButton(open: $openPilotAssistant)
+                if (openPilotAssistant || openCharging || openMediaControl) {
+                    Color.black.opacity(0.5).edgesIgnoringSafeArea(.all).transition(.opacity).onTapGesture {
+                        withAnimation{
+                            openPilotAssistant = false
+                            openCharging = false
+                            openMediaControl = false
+                        }
+                    }
+                }
+                if openPilotAssistant {
+                    VoiceCommandView(open: $openPilotAssistant, text:"Take me home")
+                        .zIndex(1)
+                        .transition(.move(edge: .bottom))
+                }
+                if openCharging {
+                    ChargingView()
+                        .zIndex(1)
+                        .transition(.move(edge: .bottom))
+                }
+                if openMediaControl {
+                    MediaPlayerView()
+                        .zIndex(1)
+                        .transition(.move(edge: .bottom))
+                }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color("DarkBg"))
@@ -43,22 +75,29 @@ struct ContentView: View {
 }
 
 struct VoiceActivationButton: View {
+    @Binding var open: Bool
     var body: some View {
         VStack {
             Spacer()
             HStack {
                 Spacer()
-                Image(systemName: "mic.fill")
-                    .font(
-                        .system(size: 24, weight: .semibold, design: .default)
-                    )
-                    .foregroundColor(.white)
-                    .frame(width: 64, height: 64)
-                    .background(Color("Red"))
-                    .foregroundColor(Color("DarkBg"))
-                    .clipShape(Circle())
-                    .padding()
-                    .shadow(radius: 10)
+                Button(action:{
+                    withAnimation {
+                        open = true
+                    }
+                }){
+                    Image(systemName: "mic.fill")
+                        .font(
+                            .system(size: 24, weight: .semibold, design: .default)
+                        )
+                        .foregroundColor(.white)
+                        .frame(width: 64, height: 64)
+                        .background(Color("Red"))
+                        .foregroundColor(Color("DarkBg"))
+                        .clipShape(Circle())
+                        .padding()
+                        .shadow(radius: 10)
+                }
             }
             
         }
@@ -67,6 +106,7 @@ struct VoiceActivationButton: View {
 }
 
 struct HomeHeaderCap: View {
+    @Binding var openMediaControl: Bool
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 10) {
@@ -87,8 +127,12 @@ struct HomeHeaderCap: View {
                 Button(action: {}) {
                     SystemButtons(icon: "lock.fill")
                 }
-                Button(action: {}) {
-                    SystemButtons(icon: "gear")
+                Button(action: {
+                    withAnimation{
+                        openMediaControl = true
+                    }
+                }) {
+                    SystemButtons(icon: "music.note")
                 }
             }
         }
@@ -97,15 +141,19 @@ struct HomeHeaderCap: View {
 }
 
 struct CarBlock: View {
+    @Binding var openCharging: Bool
     var body: some View {
         VStack(spacing: 15) {
             HStack(alignment: .center) {
-                HStack {
-                    Image(systemName: "battery.75")
-                    Text("264 miles".uppercased())
+                Button(action: {
+                    withAnimation{
+                        openCharging = true
+                    }
+                }) {
+                    Label("264 miles".uppercased(),systemImage: "battery.75" )
+                        .font(.system(size: 15, weight: .semibold, design: .rounded))
+                        .foregroundColor(Color("Green"))
                 }
-                .font(.system(size: 15, weight: .semibold, design: .rounded))
-                .foregroundColor(Color("Green"))
                 Spacer()
                 VStack(alignment: .trailing) {
                     Text("Parked")
