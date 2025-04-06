@@ -39,7 +39,6 @@ public struct AutoControlView: View {
                 }
                 CustomDivider()
                 AudioButton()
-                CustomDivider()
                 AudioControlActions()
                 CustomDivider()
                 HStack {
@@ -49,7 +48,8 @@ public struct AutoControlView: View {
                     Toggle("", isOn: $toggleConnection)
                 }
                 if toggleConnection {
-                    Text("Phone Connected")
+                    Text("AudiPilot Connected")
+                        .foregroundColor(Color("Red"))
                 }
             }
             .padding()
@@ -70,12 +70,7 @@ struct AutoControlView_Previews: PreviewProvider {
 struct AudioButton: View {
     var body: some View {
         Button(action: {}){
-            Label("Audio", systemImage: "speaker.wave.1.arrowtriangles.up.right.down.left")
-                .font(.system(size: 20, weight: .medium, design: .default))
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(Color.white.opacity(0.05))
-                .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+            FullButton(text:"Audio", icon: "speaker.wave.1.arrowtriangles.up.right.down.left")
         }
     }
 }
@@ -100,5 +95,6 @@ struct AudioControlActions: View {
                 Spacer()
             }
         }
+        .padding(.top, 10)
     }
 }

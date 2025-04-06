@@ -96,28 +96,6 @@ struct HomeHeaderCap: View {
     }
 }
 
-struct SystemButtons: View {
-    var icon: String
-    var body: some View {
-        Image(systemName: icon)
-            .imageScale(.large)
-            .frame(width: 44, height: 44)
-            .background(Color.white.opacity(0.05))
-            .clipShape(Circle())
-            .overlay(Circle().stroke(Color.white.opacity(0.1), lineWidth: 0.5))
-    }
-}
-
-struct CustomDivider: View {
-    var body: some View {
-        Rectangle()
-            .frame(maxWidth: .infinity)
-            .frame(height: 0.25)
-            .background(Color.white)
-            .opacity(0.2)
-    }
-}
-
 struct CarBlock: View {
     var body: some View {
         VStack(spacing: 15) {
@@ -192,19 +170,6 @@ struct CustomWrapper: View {
     }
 }
 
-struct ActionButton: View {
-    var icon: String
-    var body: some View {
-        VStack(alignment: .center) {
-            SystemButtons(icon: icon)
-        }
-    }
-}
-
-struct ActionItem: Hashable {
-    var icon: String
-}
-
 let quickControls: [ActionItem] = [
     ActionItem(icon: "bolt.car.fill"),
     ActionItem(icon: "car.side.front.open.fill"),
@@ -235,7 +200,9 @@ struct AllSettings: View {
                     SettingGrid(icon: "gauge.open.with.lines.needle.33percent.and.arrowtriangle", title: "Controls", subtitle: "Media and more", hasSubtitle: true, backgroundColor: Color("Blue"))
                 }
                 SettingGrid(icon: "cloud.sun.fill", title: "Climate", subtitle: "Weather and more", hasSubtitle: true)
-                SettingGrid(icon: "car.rear.road.lane.distance.5", title: "Pilot", subtitle: "Auto mode", hasSubtitle: true)
+                NavigationLink(destination: MapView()){
+                    SettingGrid(icon: "car.rear.road.lane.distance.5", title: "Pilot", subtitle: "Auto mode", hasSubtitle: true)
+                }
                 SettingGrid(icon: "gearshape.2.fill", title: "Advance", subtitle: "Advanced settings", hasSubtitle: true)
             }
             
